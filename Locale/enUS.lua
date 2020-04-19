@@ -27,6 +27,7 @@ L["Bid Mode"] = true
 L["bid_gpAbsolute_desc"] = "Highest bid wins and gets GP of bid."
 L["bid_gpRelative_desc"] = "Highest bid wins and gets GP of (gp of item)*bid"
 L["bid_prRelative_desc"] = "Highest PR*bid wins and gets GP of (gp of item)*bid"
+L["bid_gpResponse_desc"] = "Highest PR*bid wins and gets GP of bid which is based on GP from loot roll window response."
 L["Bidding"] = true
 L["bidding_desc"] = "Enable this will add a button in the rightclick menu of the voting frame to award GP to a player according to his bid. Several modes are available. Player can send bid price to the loot master by sending a note that starts with integer in the RCLootCouncil loot frame. They can also send \"min\" for the minimum bid, \"max\" for the maximum bid, and \"default\" for the default bid."
 L["chat_commands"] = "- epgp      - Open the RCLootCouncil-EPGP options interface"

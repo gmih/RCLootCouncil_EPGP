@@ -137,6 +137,7 @@ function RCEPGP:OptionsTable()
 									prRelative = LEP["bid_prRelative_desc"],
 									gpAbsolute = LEP["bid_gpAbsolute_desc"],
 									gpRelative = LEP["bid_gpRelative_desc"],
+									gpResponse = LEP["bid_gpResponse_desc"],
 								},
 								order = 3,
 								type = "select",

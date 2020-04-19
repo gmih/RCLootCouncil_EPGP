@@ -270,6 +270,8 @@ function RCVF:GetBidInfo(session, name, itemGP)
 		end
 	end
 
+    local realBid
+
 	-- nil protection
 	if session and name and lootTable and lootTable[session]
 	and lootTable[session].candidates and lootTable[session].candidates[name] then
@@ -291,20 +293,26 @@ function RCVF:GetBidInfo(session, name, itemGP)
 			if type(response) ~= "number" then -- The response is autopass, status response that user does not send response manually,
 											   -- and the user didn't send bid, so no bid in this case.
 				return nil, nil, minBid, maxBid, nil
-			end
+            end
+
+            if bidMode == "gpResponse" then
+                local data = lootTable[session].candidates[name]
+                realBid = RCEPGP:GetResponseGP(data.response, data.isTier, data.isRelic)
+            end
 		end
 	end
 
-	local realBid
-	if not bidFromNote then
-		realBid = defaultBid
-	elseif bidFromNote < minBid then
-		realBid = minBid
-	elseif bidFromNote > maxBid then
-		realBid = maxBid
-	else
-		realBid = bidFromNote
-	end
+    if bidMode ~= "gpResponse" then
+        if not bidFromNote then
+            realBid = defaultBid
+        elseif bidFromNote < minBid then
+            realBid = minBid
+        elseif bidFromNote > maxBid then
+            realBid = maxBid
+        else
+            realBid = bidFromNote
+        end
+    end
 
 	local bidGPAward
 	if realBid and itemGP and (bidMode == "prRelative" or bidMode == "gpRelative") then
@@ -313,7 +321,7 @@ function RCVF:GetBidInfo(session, name, itemGP)
 		bidGPAward = realBid
 	end
 
-	return realBid, bidFromNote, minBid, maxBid, bidGPAward
+    return realBid, bidFromNote, minBid, maxBid, bidGPAward
 end
 
 function RCVF.SetCellBid(rowFrame, frame, data, cols, row, realrow, column, fShow, table, ...)
@@ -342,7 +350,7 @@ function RCVF.SetCellBid(rowFrame, frame, data, cols, row, realrow, column, fSho
 		end
 	end
 
-	data[realrow].cols[column].value = realBid or -1
+    data[realrow].cols[column].value = realBid or -1
 end
 
 function RCVF.SetCellBidTimesPR(rowFrame, frame, data, cols, row, realrow, column, fShow, table, ...)
@@ -355,7 +363,7 @@ function RCVF.SetCellBidTimesPR(rowFrame, frame, data, cols, row, realrow, colum
 		result = realBid*ep/gp
 		frame.text:SetText(format("%.7g", result))
 	end
-	data[realrow].cols[column].value = result or -1
+    data[realrow].cols[column].value = result or -1
 end
 
 function RCVF.PRSort(table, rowa, rowb, sortbycol)
